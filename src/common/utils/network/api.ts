@@ -6,5 +6,7 @@ export enum Api {
     homeBanner = "/home/banner",
 
     // 前台分类
-    homeCategoryMutli = "home/category/mutli",
+    homeCategoryMutli = "/home/category/mutli",
+
+    homeHotMutli = "/home/hot/mutli",
 }

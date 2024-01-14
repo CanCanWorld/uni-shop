@@ -68,3 +68,28 @@ export const http = <T>(options: UniApp.RequestOptions) => {
         })
     })
 }
+
+export const http_get = <T>(options: UniApp.RequestOptions) => {
+    return http<T>({
+        ...options,
+        method: 'GET'
+    })
+}
+export const http_post = <T>(options: UniApp.RequestOptions) => {
+    return http<T>({
+        ...options,
+        method: 'POST'
+    })
+}
+export const http_put = <T>(options: UniApp.RequestOptions) => {
+    return http<T>({
+        ...options,
+        method: 'PUT'
+    })
+}
+export const http_delete = <T>(options: UniApp.RequestOptions) => {
+    return http<T>({
+        ...options,
+        method: 'DELETE'
+    })
+}
