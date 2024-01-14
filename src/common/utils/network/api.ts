@@ -8,5 +8,9 @@ export enum Api {
     // 前台分类
     homeCategoryMutli = "/home/category/mutli",
 
+    // 热门推荐
     homeHotMutli = "/home/hot/mutli",
+
+    //猜你喜欢
+    homeGoodsGuessLike = "/home/goods/guessLike",
 }

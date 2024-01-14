@@ -1,10 +1,14 @@
 <template>
-  <view class="page">
-    <CustomNavbar/>
+  <CustomNavbar/>
+  <scroll-view
+      scroll-y
+      @scrolltolower="onScrollToLower"
+      class="scroll-view">
     <CustomSwiper :list="bannerList"/>
     <CategoryPanel :list="categoryList"/>
     <HotPanel :list="hotList"/>
-  </view>
+    <CustomGuess ref="guessRef"/>
+  </scroll-view>
 </template>
 
 <script setup lang="ts">
@@ -18,6 +22,9 @@ import CustomNavbar from "@/pages/index/components/CustomNavbar.vue";
 import CategoryPanel from "@/pages/index/components/CategoryPanel.vue";
 import HotPanel from "@/pages/index/components/HotPanel.vue";
 import type {HotItem} from "@/common/types/hot-item";
+import type {CustomGuessInstance} from "@/common/components/components";
+
+const guessRef = ref<CustomGuessInstance>()
 
 const bannerList = ref<BannerItem[]>([])
 const categoryList = ref<CategoryItem[]>([])
@@ -35,10 +42,15 @@ const getHomeCategoryData = async () => {
   console.log('getHomeCategoryData: ', res)
 }
 
-const getHomeHotData = async ()=>{
-  const res =  await getHomeHotApi()
+const getHomeHotData = async () => {
+  const res = await getHomeHotApi()
   hotList.value = res.result
   console.log('getHomeHotData: ', res)
+}
+
+const onScrollToLower = ()=>{
+  console.log("滚动触底了")
+  guessRef.value.getMore()
 }
 
 onLoad(() => {
@@ -53,5 +65,12 @@ onLoad(() => {
 <style scoped lang="scss">
 page {
   background-color: #f7f7f7;
+  height: 100%;
+  flex-direction: column;
+}
+
+.scroll-view {
+  height: 100vh;
+  padding-bottom: var(--window-bottom)
 }
 </style>

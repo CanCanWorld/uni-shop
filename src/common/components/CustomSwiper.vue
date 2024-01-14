@@ -51,7 +51,6 @@ const onChange = (ev: any) => {
 
 /* 轮播图 */
 .carousel {
-  height: 100%;
   position: relative;
   overflow: hidden;
   transform: translateY(0);
