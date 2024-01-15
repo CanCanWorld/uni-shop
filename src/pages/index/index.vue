@@ -1,16 +1,19 @@
 <template>
-    <MainBox ref="mainRef">
-        <CustomNavbar/>
-        <scroll-view
-                scroll-y
-                @scrolltolower="onScrollToLower"
-                class="scroll-view">
-            <CustomSwiper :list="bannerList"/>
-            <CategoryPanel :list="categoryList"/>
-            <HotPanel :list="hotList"/>
-            <CustomGuess ref="guessRef"/>
-        </scroll-view>
-    </MainBox>
+  <MainBox ref="mainRef">
+    <CustomNavbar/>
+    <scroll-view
+        refresher-enabled
+        scroll-y
+        :refresher-triggered="isTriggered"
+        @refresherrefresh="onRefresh"
+        @scrolltolower="onScrollToLower"
+        class="scroll-view">
+      <CustomSwiper :list="bannerList"/>
+      <CategoryPanel :list="categoryList"/>
+      <HotPanel :list="hotList"/>
+      <CustomGuess ref="guessRef"/>
+    </scroll-view>
+  </MainBox>
 </template>
 
 <script setup lang="ts">
@@ -32,34 +35,48 @@ const guessRef = ref<CustomGuessInstance>()
 const bannerList = ref<BannerItem[]>([])
 const categoryList = ref<CategoryItem[]>([])
 const hotList = ref<HotItem[]>([])
+const isTriggered = ref(false)
 
 const getHomeBannerData = async () => {
-    const res = await getHomeBannerApi()
-    bannerList.value = res.result
-    console.log('getHomeBannerData: ', bannerList.value)
+  const res = await getHomeBannerApi()
+  bannerList.value = res.result
+  console.log('getHomeBannerData: ', bannerList.value)
 }
 
 const getHomeCategoryData = async () => {
-    const res = await getHomeCategoryApi()
-    categoryList.value = res.result
-    console.log('getHomeCategoryData: ', res)
+  const res = await getHomeCategoryApi()
+  categoryList.value = res.result
+  console.log('getHomeCategoryData: ', res)
 }
 
 const getHomeHotData = async () => {
-    const res = await getHomeHotApi()
-    hotList.value = res.result
-    console.log('getHomeHotData: ', res)
+  const res = await getHomeHotApi()
+  hotList.value = res.result
+  console.log('getHomeHotData: ', res)
 }
 
 const onScrollToLower = () => {
-    console.log("滚动触底了")
+  console.log("滚动触底了")
+  guessRef.value.getMore()
+}
+
+const onRefresh = async () => {
+  console.log("刷新")
+  isTriggered.value = true
+  guessRef.value.resetData()
+  await Promise.all([
+    getHomeBannerData(),
+    getHomeCategoryData(),
+    getHomeHotData(),
     guessRef.value.getMore()
+  ])
+  isTriggered.value = false
 }
 
 onLoad(() => {
-    getHomeBannerData()
-    getHomeCategoryData()
-    getHomeHotData()
+  getHomeBannerData()
+  getHomeCategoryData()
+  getHomeHotData()
 })
 
 </script>

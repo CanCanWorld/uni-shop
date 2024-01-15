@@ -32,12 +32,19 @@ const getHomeGoodsGuessLikeData = async () => {
   console.log('getHomeGoodsGuessLike: ', guessList.value)
 }
 
+const resetData = ()=>{
+  pageParams.page = 1
+  guessList.value = []
+  finish.value = false
+}
+
 onMounted(() => {
   getHomeGoodsGuessLikeData()
 })
 
 defineExpose({
-  getMore: getHomeGoodsGuessLikeData
+  getMore: getHomeGoodsGuessLikeData,
+  resetData,
 })
 
 </script>
