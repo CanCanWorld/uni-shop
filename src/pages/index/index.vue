@@ -1,14 +1,16 @@
 <template>
-  <CustomNavbar/>
-  <scroll-view
-      scroll-y
-      @scrolltolower="onScrollToLower"
-      class="scroll-view">
-    <CustomSwiper :list="bannerList"/>
-    <CategoryPanel :list="categoryList"/>
-    <HotPanel :list="hotList"/>
-    <CustomGuess ref="guessRef"/>
-  </scroll-view>
+    <MainBox ref="mainRef">
+        <CustomNavbar/>
+        <scroll-view
+                scroll-y
+                @scrolltolower="onScrollToLower"
+                class="scroll-view">
+            <CustomSwiper :list="bannerList"/>
+            <CategoryPanel :list="categoryList"/>
+            <HotPanel :list="hotList"/>
+            <CustomGuess ref="guessRef"/>
+        </scroll-view>
+    </MainBox>
 </template>
 
 <script setup lang="ts">
@@ -22,8 +24,9 @@ import CustomNavbar from "@/pages/index/components/CustomNavbar.vue";
 import CategoryPanel from "@/pages/index/components/CategoryPanel.vue";
 import HotPanel from "@/pages/index/components/HotPanel.vue";
 import type {HotItem} from "@/common/types/hot-item";
-import type {CustomGuessInstance} from "@/common/components/components";
+import type {CustomGuessInstance, MainBoxInstance} from "@/common/components/components";
 
+const mainRef = ref<MainBoxInstance>()
 const guessRef = ref<CustomGuessInstance>()
 
 const bannerList = ref<BannerItem[]>([])
@@ -31,32 +34,32 @@ const categoryList = ref<CategoryItem[]>([])
 const hotList = ref<HotItem[]>([])
 
 const getHomeBannerData = async () => {
-  const res = await getHomeBannerApi()
-  bannerList.value = res.result
-  console.log('getHomeBannerData: ', bannerList.value)
+    const res = await getHomeBannerApi()
+    bannerList.value = res.result
+    console.log('getHomeBannerData: ', bannerList.value)
 }
 
 const getHomeCategoryData = async () => {
-  const res = await getHomeCategoryApi()
-  categoryList.value = res.result
-  console.log('getHomeCategoryData: ', res)
+    const res = await getHomeCategoryApi()
+    categoryList.value = res.result
+    console.log('getHomeCategoryData: ', res)
 }
 
 const getHomeHotData = async () => {
-  const res = await getHomeHotApi()
-  hotList.value = res.result
-  console.log('getHomeHotData: ', res)
+    const res = await getHomeHotApi()
+    hotList.value = res.result
+    console.log('getHomeHotData: ', res)
 }
 
-const onScrollToLower = ()=>{
-  console.log("滚动触底了")
-  guessRef.value.getMore()
+const onScrollToLower = () => {
+    console.log("滚动触底了")
+    guessRef.value.getMore()
 }
 
 onLoad(() => {
-  getHomeBannerData()
-  getHomeCategoryData()
-  getHomeHotData()
+    getHomeBannerData()
+    getHomeCategoryData()
+    getHomeHotData()
 })
 
 </script>

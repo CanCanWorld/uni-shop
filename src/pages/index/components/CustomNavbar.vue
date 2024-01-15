@@ -1,30 +1,36 @@
 <script setup lang="ts">
 
+import store from "@/common/utils/store/store";
+import {computed} from "vue";
+
 const {safeAreaInsets} = uni.getSystemInfoSync()
+
+const theme = computed(() => store.state.skin)
 
 console.log(safeAreaInsets)
 
 </script>
 
 <template>
-  <view class="navbar" :style="{paddingTop : safeAreaInsets?.top + 'px'}">
-    <!-- logo文字 -->
-    <view class="logo">
-      <image class="logo-image" src="@/static/images/logo.png"></image>
-      <text class="logo-text">新鲜 · 亲民 · 快捷</text>
+    <view class="navbar" :style="{paddingTop : safeAreaInsets?.top + 'px'}">
+        <!-- logo文字 -->
+        <view class="logo">
+            <image class="logo-image" src="@/static/images/logo.png"></image>
+            <text class="logo-text">新鲜 · 亲民 · 快捷</text>
+        </view>
+        <!-- 搜索条 -->
+        <view class="search">
+            <text class="icon-search">搜索商品</text>
+            <text class="icon-scan"></text>
+        </view>
     </view>
-    <!-- 搜索条 -->
-    <view class="search">
-      <text class="icon-search">搜索商品</text>
-      <text class="icon-scan"></text>
-    </view>
-  </view>
 </template>
 
 <style scoped lang="scss">
 /* 自定义导航条 */
 .navbar {
-  background-image: url(@/static/images/navigator_bg.png);
+  //background-image: url(@/static/images/navigator_bg.png);
+  background-color: var(--bg-color);
   background-size: cover;
   position: relative;
   display: flex;
