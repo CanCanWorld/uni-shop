@@ -1,8 +1,3 @@
-export interface GuessItem {
-    id: string;
-    name: string;
-    desc: string;
-    price: string;
-    picture: string;
-    orderNum: number;
-}
+import type {GoodsItem} from "@/common/types/goods-item";
+
+export type GuessItem  = GoodsItem

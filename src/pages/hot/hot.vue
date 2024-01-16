@@ -1,12 +1,18 @@
 // /src/pages/hot/hot.vue
 <script setup lang="ts">
 // 热门推荐页 标题和url
+import {getHotRecommendApi} from "@/common/services/hot";
+import {onLoad} from "@dcloudio/uni-app";
+import {ref} from "vue";
+
 const hotMap = [
   {type: '1', title: '特惠推荐', url: '/hot/preference'},
   {type: '2', title: '爆款推荐', url: '/hot/inVogue'},
   {type: '3', title: '一站买全', url: '/hot/oneStop'},
   {type: '4', title: '新鲜好物', url: '/hot/new'},
 ]
+
+const bannerPicture = ref('')
 
 const query = defineProps<{
   type: string
@@ -16,6 +22,16 @@ console.log('type: ', query.type)
 const currentHot = hotMap.find(v => v.type === query.type)
 console.log('currentHot: ', currentHot)
 uni.setNavigationBarTitle({title: currentHot!.title})
+
+const getHotRecommendData = async () => {
+  const res = await getHotRecommendApi(currentHot!.url)
+  console.log(res)
+  bannerPicture.value = res.result.bannerPicture
+}
+
+onLoad(() => {
+  getHotRecommendData()
+})
 </script>
 
 <template>
@@ -23,7 +39,7 @@ uni.setNavigationBarTitle({title: currentHot!.title})
     <!-- 推荐封面图 -->
     <view class="cover">
       <image
-          src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-05-20/84abb5b1-8344-49ae-afc1-9cb932f3d593.jpg"
+          :src="bannerPicture"
       ></image>
     </view>
     <!-- 推荐选项 -->
